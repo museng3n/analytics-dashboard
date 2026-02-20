@@ -19,6 +19,15 @@ export default function AnalyticsDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const urlToken = urlParams.get('token')
+    if (urlToken) {
+      localStorage.setItem('authToken', urlToken)
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!isAuthenticated()) {
       window.location.href = URLS.AUTH
       return
