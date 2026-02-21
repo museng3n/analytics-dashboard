@@ -148,7 +148,7 @@ export default function AnalyticsDashboard() {
   ]
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[#F3F4F6] p-4 md:p-8">
+    <div dir="rtl" className="min-h-screen bg-[#F3F4F6] p-6 md:p-8">
       {/* Page Header */}
       <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Analytics Dashboard</h1>
