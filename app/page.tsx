@@ -108,7 +108,7 @@ export default function AnalyticsDashboard() {
   const recentActivities = dashboardData?.recentActivities || [
     {
       type: "hot",
-      icon: "🔥",
+      icon: "hot",
       message: "John Doe moved to Hot",
       detail: 'Via: Email reply to "Product Launch"',
       time: "2 min ago",
@@ -116,34 +116,68 @@ export default function AnalyticsDashboard() {
     },
     {
       type: "campaign",
-      icon: "📧",
+      icon: "campaign",
       message: 'Campaign "Welcome Series" sent to 234 contacts',
       time: "15 min ago",
       color: "#7C3AED",
     },
     {
       type: "automation",
-      icon: "⚡",
+      icon: "automation",
       message: 'Automation "Auto Reply" executed for @ahmad',
       time: "23 min ago",
       color: "#10B981",
     },
     {
       type: "transfer",
-      icon: "🚀",
+      icon: "transfer",
       message: "Sara Ali transferred to GHL successfully",
       time: "45 min ago",
       color: "#3B82F6",
     },
     {
       type: "payment",
-      icon: "💰",
+      icon: "payment",
       message: "Payment received: $299 from Ahmed Corp",
       detail: "Plan: Professional (Annual)",
       time: "1 hour ago",
       color: "#F59E0B",
     },
   ]
+
+  const activityIcons: Record<string, { bg: string; text: string; paths: string[] }> = {
+    hot: {
+      bg: "bg-orange-50", text: "text-orange-400",
+      paths: [
+        "M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.048 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z",
+        "M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.546 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z",
+      ],
+    },
+    campaign: {
+      bg: "bg-violet-50", text: "text-violet-400",
+      paths: [
+        "M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75",
+      ],
+    },
+    automation: {
+      bg: "bg-purple-50", text: "text-purple-400",
+      paths: [
+        "m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z",
+      ],
+    },
+    transfer: {
+      bg: "bg-blue-50", text: "text-blue-400",
+      paths: [
+        "M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5",
+      ],
+    },
+    payment: {
+      bg: "bg-green-50", text: "text-green-400",
+      paths: [
+        "M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z",
+      ],
+    },
+  }
 
   return (
     <div dir="rtl" className="min-h-screen bg-[#F3F4F6] p-6 md:p-8">
@@ -824,12 +858,18 @@ export default function AnalyticsDashboard() {
           {recentActivities.map((activity, index) => (
             <div key={index} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <div className="flex items-start gap-3">
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: activity.color + "20" }}
-                >
-                  <span className="text-2xl">{activity.icon}</span>
-                </div>
+                {(() => {
+                  const config = activityIcons[activity.type] || activityIcons.hot;
+                  return (
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.bg}`}>
+                      <svg className={`w-4 h-4 ${config.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                        {config.paths.map((d: string, i: number) => (
+                          <path key={i} strokeLinecap="round" strokeLinejoin="round" d={d} />
+                        ))}
+                      </svg>
+                    </div>
+                  );
+                })()}
                 <div className="flex-1">
                   <div className="font-semibold text-gray-900">{activity.message}</div>
                   {activity.detail && <div className="text-sm text-gray-600 mt-1">{activity.detail}</div>}
