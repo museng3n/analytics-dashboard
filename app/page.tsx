@@ -25,9 +25,7 @@ export default function AnalyticsDashboard() {
       localStorage.setItem('triggerio_token', urlToken)
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [])
 
-  useEffect(() => {
     if (!isAuthenticated()) {
       window.location.href = URLS.AUTH
       return
